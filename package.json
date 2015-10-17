@@ -1,6 +1,6 @@
 {
   "name": "loader-builder",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Builder of Loader",
   "main": "lib/builder.js",
   "scripts": {
@@ -18,11 +18,12 @@
     "Builder"
   ],
   "dependencies": {
-    "uglify-js": "=2.4.6",
     "clean-css": "=2.0.2",
+    "coffee-script": "=1.7.1",
+    "colors": "^1.1.2",
     "less": "=1.7.0",
     "stylus": "=0.42.3",
-    "coffee-script": "=1.7.1"
+    "uglify-js": "=2.4.6"
   },
   "devDependencies": {
     "mocha": "*",
