@@ -48,6 +48,12 @@ describe('builder', function () {
           '/assets//styles/jquery.autocomplete.css'
         ]
       },
+      {
+        target: "/assets/images/test.jpg",
+        assets: [
+         "/assets/images/test.jpg"
+        ]
+      },
       { target: '/assets/styles/hoho.min.css',
         assets:
          [ '/assets/styles/reset.css',
