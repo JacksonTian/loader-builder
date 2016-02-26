@@ -1,6 +1,6 @@
 {
   "name": "loader-builder",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Builder of Loader",
   "main": "lib/builder.js",
   "scripts": {
