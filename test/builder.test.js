@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path');
 var fs = require('fs');
 var should = require('should');
@@ -46,6 +48,12 @@ describe('builder', function () {
           '/assets/styles/site_nav.css',
           '/assets/styles/color.css',
           '/assets//styles/jquery.autocomplete.css'
+        ]
+      },
+      {
+        target: "/assets/images/test.jpg",
+        assets: [
+         "/assets/images/test.jpg"
         ]
       },
       { target: '/assets/styles/hoho.min.css',
@@ -187,6 +195,26 @@ describe('builder', function () {
     var minJS = path.join(__dirname, map["/assets/home.css"]);
 
     fs.readFileSync(minJS, 'utf-8').should.equal('.class{width:2}\n');
+  });
+
+  it("minify should work well with img", function () {
+    var arr = [
+      {"target": "/assets/images/test.jpg", "assets": []}
+    ];
+    var minified = builder.minify(__dirname, arr);
+    minified.should.eql([
+      { target: '/assets/images/test.jpg',
+        assets: [],
+        min: "/assets/images/test.43e9fc4d.jpg"
+      }
+    ]);
+
+    var map = builder.map(minified);
+    map.should.eql({
+      "/assets/images/test.jpg": "/assets/images/test.43e9fc4d.jpg"
+    });
+    var img = path.join(__dirname, map["/assets/images/test.jpg"]);
+    fs.readFileSync(img).should.be.ok;
   });
 
   it("minify should work with exception", function () {

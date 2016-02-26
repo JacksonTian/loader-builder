@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 var path = require('path');
 var fs = require('fs');
 var builder = require('../lib/builder');
@@ -22,6 +24,8 @@ var baseDir = path.join(process.cwd(), argv[3]);
 
 // scan views folder, get the assets map
 var scaned = builder.scanDir(viewsDir);
+// check duplicate target
+builder.checkTarget(scaned);
 // console.log(scaned);
 console.log(colors.magenta("Scaned."), colors.cyan(scaned.length), colors.magenta('asset(s) will be build.'));
 
