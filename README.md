@@ -1,5 +1,10 @@
 loader-builder
 ==============
+
+- [![Dependencies Status](https://david-dm.org/JacksonTian/loader-builder.png)](https://david-dm.org/JacksonTian/loader-builder)
+
+## Introduction
+
 Loader's builder
 
 用于Loader的构建器。构建器用于扫描制定目录的视图文件，将Loader语法的调用提取出来，生成资源文件的关系映射。同时还对`.less`、`.styl`、`.coffee`、`.es`格式的文件进行编译，将其转换为普通的`.js`、`.css`文件。同时还会将编译好的文件通过`uglify`/`cleancss`进行压缩。对同一个Loader标签下的js和css文件，还会将其combo成一个文件，并计算出hash。
