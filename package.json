@@ -18,12 +18,12 @@
     "Builder"
   ],
   "dependencies": {
-    "clean-css": "=2.0.2",
-    "coffee-script": "=1.7.1",
+    "clean-css": "~3.4.10",
+    "coffee-script": "~1.10.0",
     "colors": "^1.1.2",
-    "less": "=1.7.0",
-    "stylus": "=0.42.3",
-    "uglify-js": "=2.4.6"
+    "less": "~2.6.1",
+    "stylus": "~0.54.2",
+    "uglify-js": "~2.6.2"
   },
   "devDependencies": {
     "mocha": "*",
