@@ -22,17 +22,21 @@ var viewsDir = path.join(process.cwd(), argv[2]);
 // app/
 var baseDir = path.join(process.cwd(), argv[3]);
 
+var start = new Date();
 // scan views folder, get the assets map
 var scaned = builder.scanDir(viewsDir);
 // check duplicate target
 builder.checkTarget(scaned);
 // console.log(scaned);
-console.log(colors.magenta("Scaned."), colors.cyan(scaned.length), colors.magenta('asset(s) will be build.'));
+console.log(colors.magenta("Scaned."), colors.cyan(scaned.length),
+  colors.magenta('asset(s) will be build.'));
 
 // combo？md5 hash
 var minified = builder.minify(baseDir, scaned);
 // console.log(minified);
-console.log(colors.magenta(" 🏁  Compile static assets done."));
+console.log(colors.magenta(" 🏁  Compile static assets done."),
+  colors.gray('Build time'), colors.cyan(new Date() - start),
+  colors.gray('ms.'));
 
 // write the assets mapping into assets.json
 var assets = path.join(baseDir, 'assets.json');

@@ -212,14 +212,14 @@ describe('builder', function () {
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
       { target: '/assets/images/test.jpg',
-        min: '/assets/images/test.43e9fc4d.jpg',
+        min: '/assets/images/test.43e9fc4d.hashed.jpg',
         'type': 'file'
       }
     ]);
 
     var map = builder.map(minified);
     map.should.eql({
-      '/assets/images/test.jpg': '/assets/images/test.43e9fc4d.jpg'
+      '/assets/images/test.jpg': '/assets/images/test.43e9fc4d.hashed.jpg'
     });
     var file = path.join(__dirname, map['/assets/images/test.jpg']);
     fs.readFileSync(file).should.be.ok;
@@ -232,5 +232,23 @@ describe('builder', function () {
     (function () {
       builder.minify(__dirname, arr);
     }).should.throw('Compress /assets/invalid.js has error:\nUnexpected token: operator (<)');
+  });
+
+  it('processUrl should ok', function () {
+    var input = `background-image: url('/assets/images/test.jpg');`;
+    var output = builder.processUrl(__dirname, input, {});
+    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+  });
+
+  it('processUrl with hash should ok', function () {
+    var input = `background-image: url('/assets/images/test.jpg#hash');`;
+    var output = builder.processUrl(__dirname, input, {});
+    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg#hash');`);
+  });
+
+  it('processUrl hit cache should ok', function () {
+    var input = `background-image: url('/assets/images/test.jpg#hash');\nbackground-image: url('/assets/images/test.jpg');`;
+    var output = builder.processUrl(__dirname, input, {});
+    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg#hash');\nbackground-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
   });
 });
