@@ -1,6 +1,6 @@
 {
   "name": "loader-builder",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Builder of Loader",
   "main": "lib/builder.js",
   "scripts": {
@@ -41,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/JacksonTian/loader-builder/issues"
   },
-  "homepage": "https://github.com/JacksonTian/loader-builder#readme"
+  "homepage": "https://github.com/JacksonTian/loader-builder#readme",
+  "files": [
+    "bin", "lib"
+  ]
 }
