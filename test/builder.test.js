@@ -28,20 +28,25 @@ describe('builder', function () {
     builder.scan(str).should.eql([
       {
         target: '/assets/scripts/index.min.js',
-        assets: [ '/assets/scripts/index.js' ]
+        assets: [ '/assets/scripts/index.js' ],
+        type: 'js'
       },
       {
         target: '/assets/scripts/jqueryplugin.min.js',
         assets: [ '/assets/scripts/lib/jquery.jmodal.js',
            '/assets/scripts/lib/jquery.mousewheel.min.js',
-           '/assets/scripts/lib/jquery.tagsphere.min.js' ]
+           '/assets/scripts/lib/jquery.tagsphere.min.js' ],
+        type: 'js'
       },
       { target: '/assets/styles/jqueryplugin.min.css',
-        assets: [ '/hehe' ] }
+        assets: [ '/hehe' ],
+        type: 'css'
+      }
     ]);
 
-    builder.scanDir(path.join(__dirname, "views")).should.eql([
+    builder.scanDir(path.join(__dirname, 'views')).should.eql([
       { target: '/assets/styles/common.min.css',
+        'type': 'css',
         assets: [
           '/assets/styles/reset.css',
           '/assets/styles/common.css',
@@ -51,12 +56,11 @@ describe('builder', function () {
         ]
       },
       {
-        target: "/assets/images/test.jpg",
-        assets: [
-         "/assets/images/test.jpg"
-        ]
+        target: '/assets/images/test.jpg',
+        'type': 'file'
       },
       { target: '/assets/styles/hoho.min.css',
+        'type': 'css',
         assets:
          [ '/assets/styles/reset.css',
            '/assets/styles/common.css',
@@ -80,6 +84,7 @@ describe('builder', function () {
     builder.scan(str).should.eql([
       {
         target: '/assets/styles/common.min.css',
+        type: 'css',
         assets:
          [ '/assets/styles/reset.css',
            '/assets/styles/common.css',
@@ -103,6 +108,7 @@ describe('builder', function () {
     builder.scan(str).should.eql([
       {
         target: '/assets/styles/common.min.css',
+        type: 'css',
         assets:
          [ '/assets/styles/reset.css',
            '/assets/styles/common.css',
@@ -113,19 +119,21 @@ describe('builder', function () {
     ]);
   });
 
-  it("minify should work well", function () {
+  it('minify should work well', function () {
     var arr = [
-      {"target": "/assets/min.js", "assets": ["/assets/hehe.js", "/assets/ganma.js"]},
-      {"target": "/assets/min.css", "assets": ["/assets/hehe.css", "/assets/ganma.css", "/assets/home.less"]}
+      {'target': '/assets/min.js', type: 'js', 'assets': ['/assets/hehe.js', '/assets/ganma.js']},
+      {'target': '/assets/min.css', type: 'css', 'assets': ['/assets/hehe.css', '/assets/ganma.css', '/assets/home.less']}
     ];
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
       { target: '/assets/min.js',
+        "type": "js",
         assets: [ '/assets/hehe.js', '/assets/ganma.js' ],
-        min: '/assets/min.99d5311f.min.js',
-        debug: '/assets/min.99d5311f.debug.js'
+        min: '/assets/min.7d0550f0.min.js',
+        debug: '/assets/min.7d0550f0.debug.js'
       },
       { target: '/assets/min.css',
+        "type": "css",
         assets: [ '/assets/hehe.css', '/assets/ganma.css', '/assets/home.less' ],
         min: '/assets/min.0d525130.min.css',
         debug: '/assets/min.0d525130.debug.css'
@@ -133,16 +141,16 @@ describe('builder', function () {
     ]);
 
     var map = builder.map(minified);
-    var minJS = path.join(__dirname, map["/assets/min.js"]);
-    var minCSS = path.join(__dirname, map["/assets/min.css"]);
+    var minJS = path.join(__dirname, map['/assets/min.js']);
+    var minCSS = path.join(__dirname, map['/assets/min.css']);
 
-    fs.readFileSync(minJS, 'utf-8').should.equal('!function(){console.log("Hello World!")}();\n!function(){console.log("Hello World!")}();\n');
-    fs.readFileSync(minCSS, 'utf-8').should.equal(".foo{float:left}\n.bar{float:left}\n.class{width:2}\n");
+    fs.readFileSync(minJS, 'utf-8').should.equal('!function(o,l,n,c){console.log("Hello World!")}();\n!function(o,l,n,c){console.log("Hello World!")}();\n');
+    fs.readFileSync(minCSS, 'utf-8').should.equal('.foo{float:left}\n.bar{float:left}\n.class{width:2}\n');
   });
 
-  it("minify should work well with coffee", function () {
+  it('minify should work well with coffee', function () {
     var arr = [
-      {"target": "/assets/coffee.js", "assets": ["/assets/js.coffee"]}
+      {'target': '/assets/coffee.js', 'assets': ['/assets/js.coffee']}
     ];
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
@@ -154,14 +162,14 @@ describe('builder', function () {
     ]);
 
     var map = builder.map(minified);
-    var minJS = path.join(__dirname, map["/assets/coffee.js"]);
+    var minJS = path.join(__dirname, map['/assets/coffee.js']);
 
     fs.readFileSync(minJS, 'utf-8').should.equal('(function(){var n;n=function(n){return n*n}}).call(this);\n');
   });
 
-  it("minify should work well with coffee", function () {
+  it('minify should work well with coffee', function () {
     var arr = [
-      {"target": "/assets/coffee.js", "assets": ["/assets/js.coffee"]}
+      {'target': '/assets/coffee.js', 'assets': ['/assets/js.coffee']}
     ];
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
@@ -173,14 +181,14 @@ describe('builder', function () {
     ]);
 
     var map = builder.map(minified);
-    var minJS = path.join(__dirname, map["/assets/coffee.js"]);
+    var minJS = path.join(__dirname, map['/assets/coffee.js']);
 
     fs.readFileSync(minJS, 'utf-8').should.equal('(function(){var n;n=function(n){return n*n}}).call(this);\n');
   });
 
-  it("minify should work well with stylus", function () {
+  it('minify should work well with stylus', function () {
     var arr = [
-      {"target": "/assets/home.css", "assets": ["/assets/home.styl"]}
+      {'target': '/assets/home.css', 'assets': ['/assets/home.styl']}
     ];
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
@@ -192,34 +200,34 @@ describe('builder', function () {
     ]);
 
     var map = builder.map(minified);
-    var minJS = path.join(__dirname, map["/assets/home.css"]);
+    var minJS = path.join(__dirname, map['/assets/home.css']);
 
     fs.readFileSync(minJS, 'utf-8').should.equal('.class{width:2}\n');
   });
 
-  it("minify should work well with img", function () {
+  it('minify should work well with file', function () {
     var arr = [
-      {"target": "/assets/images/test.jpg", "assets": []}
+      {'target': '/assets/images/test.jpg', type: 'file'}
     ];
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
       { target: '/assets/images/test.jpg',
-        assets: [],
-        min: "/assets/images/test.43e9fc4d.jpg"
+        min: '/assets/images/test.43e9fc4d.jpg',
+        'type': 'file'
       }
     ]);
 
     var map = builder.map(minified);
     map.should.eql({
-      "/assets/images/test.jpg": "/assets/images/test.43e9fc4d.jpg"
+      '/assets/images/test.jpg': '/assets/images/test.43e9fc4d.jpg'
     });
-    var img = path.join(__dirname, map["/assets/images/test.jpg"]);
-    fs.readFileSync(img).should.be.ok;
+    var file = path.join(__dirname, map['/assets/images/test.jpg']);
+    fs.readFileSync(file).should.be.ok;
   });
 
-  it("minify should work with exception", function () {
+  it('minify should work with exception', function () {
     var arr = [
-      {"target": "/assets/sorry.js", "assets": ["/assets/invalid.js"]},
+      {'target': '/assets/sorry.js', 'assets': ['/assets/invalid.js']}
     ];
     (function () {
       builder.minify(__dirname, arr);
