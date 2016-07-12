@@ -231,7 +231,7 @@ describe('builder', function () {
     ];
     (function () {
       builder.minify(__dirname, arr);
-    }).should.throw('Compress /assets/invalid.js has error:\nUnexpected token: operator (<)');
+    }).should.throw('Compress /assets/invalid.js has error:\nSyntaxError: Unexpected token: operator (<)');
   });
 
   it('processUrl should ok', function () {
