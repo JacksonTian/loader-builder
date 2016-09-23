@@ -251,4 +251,22 @@ describe('builder', function () {
     var output = builder.processUrl(__dirname, input, {});
     output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg#hash');\nbackground-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
   });
+
+  it('processUrl with http(x):// should ok', function () {
+    var input = `background-image: url('http://domain.com/assets/images/test.jpg');`;
+    var output = builder.processUrl(__dirname, input, {});
+    output.should.be.equal(`background-image: url('http://domain.com/assets/images/test.jpg');`);
+  });
+
+  it('processUrl with (..) should ok', function () {
+    var input = `background-image: url('../images/test.jpg');`;
+    var output = builder.processUrl(__dirname, input, {}, '/assets/styles/main.css');
+    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+  });
+
+  it('processUrl with (.) should ok', function () {
+    var input = `background-image: url('./images/test.jpg');`;
+    var output = builder.processUrl(__dirname, input, {}, '/assets/main.css');
+    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+  });
 });
