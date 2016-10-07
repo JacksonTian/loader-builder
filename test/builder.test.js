@@ -258,6 +258,12 @@ describe('builder', function () {
     output.should.be.equal(`background-image: url('http://domain.com/assets/images/test.jpg');`);
   });
 
+  it('processUrl with data:uri should ok', function () {
+    var input = `background-image: url('data:,Hello%2C%20World!');`;
+    var output = builder.processUrl(__dirname, input, {});
+    output.should.be.equal(`background-image: url('data:,Hello%2C%20World!');`);
+  });
+
   it('processUrl with (..) should ok', function () {
     var input = `background-image: url('../images/test.jpg');`;
     var output = builder.processUrl(__dirname, input, {}, '/assets/styles/main.css');
