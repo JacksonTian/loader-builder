@@ -39,6 +39,8 @@ builder完成了静态文件相关的如下操作：
 {%- Loader.file('/assets/images/file.png').done()%}
 ```
 
+Loader.file() 这个 API 主要用于不可被合并的文件，比如单个图片。
+
 ## 构建
 为了配合Loader的使用，builder需要通过构建的方式来生成静态文件的映射。其格式如下：
 
