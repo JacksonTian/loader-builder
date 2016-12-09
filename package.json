@@ -29,12 +29,14 @@
     "uglify-js": "^2.7.3"
   },
   "devDependencies": {
-    "mocha": "*",
-    "istanbul": "*",
-    "should": "3.0.x",
-    "travis-cov": "*",
     "coveralls": "*",
-    "mocha-lcov-reporter": "*"
+    "eslint": "^3.11.1",
+    "expect.js": "^0.3.1",
+    "istanbul": "*",
+    "mocha": "*",
+    "mocha-lcov-reporter": "*",
+    "should": "3.0.x",
+    "travis-cov": "*"
   },
   "author": "Jackson Tian",
   "license": "MIT",
@@ -43,6 +45,7 @@
   },
   "homepage": "https://github.com/JacksonTian/loader-builder#readme",
   "files": [
-    "bin", "lib"
+    "bin",
+    "lib"
   ]
 }

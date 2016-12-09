@@ -3,7 +3,7 @@
 var path = require('path');
 var fs = require('fs');
 var should = require('should');
-
+var expect = require('expect.js');
 var builder = require('../lib/builder');
 
 describe('builder', function () {
@@ -34,8 +34,8 @@ describe('builder', function () {
       {
         target: '/assets/scripts/jqueryplugin.min.js',
         assets: [ '/assets/scripts/lib/jquery.jmodal.js',
-           '/assets/scripts/lib/jquery.mousewheel.min.js',
-           '/assets/scripts/lib/jquery.tagsphere.min.js' ],
+          '/assets/scripts/lib/jquery.mousewheel.min.js',
+          '/assets/scripts/lib/jquery.tagsphere.min.js' ],
         type: 'js'
       },
       { target: '/assets/styles/jqueryplugin.min.css',
@@ -62,11 +62,11 @@ describe('builder', function () {
       { target: '/assets/styles/hoho.min.css',
         'type': 'css',
         assets:
-         [ '/assets/styles/reset.css',
-           '/assets/styles/common.css',
-           '/assets/styles/site_nav.css',
-           '/assets/styles/color.css',
-           '/assets//styles/jquery.autocomplete.css' ]
+        [ '/assets/styles/reset.css',
+          '/assets/styles/common.css',
+          '/assets/styles/site_nav.css',
+          '/assets/styles/color.css',
+          '/assets//styles/jquery.autocomplete.css' ]
       }
     ]);
   });
@@ -86,11 +86,11 @@ describe('builder', function () {
         target: '/assets/styles/common.min.css',
         type: 'css',
         assets:
-         [ '/assets/styles/reset.css',
-           '/assets/styles/common.css',
-           '/assets/styles/site_nav.css',
-           '/assets/styles/color.css',
-           '/assets//styles/jquery.autocomplete.css' ]
+        [ '/assets/styles/reset.css',
+          '/assets/styles/common.css',
+          '/assets/styles/site_nav.css',
+          '/assets/styles/color.css',
+          '/assets//styles/jquery.autocomplete.css' ]
       }
     ]);
   });
@@ -110,11 +110,11 @@ describe('builder', function () {
         target: '/assets/styles/common.min.css',
         type: 'css',
         assets:
-         [ '/assets/styles/reset.css',
-           '/assets/styles/common.css',
-           '/assets/styles/site_nav.css',
-           '/assets/styles/color.css',
-           '/assets//styles/jquery.autocomplete.css' ]
+        [ '/assets/styles/reset.css',
+          '/assets/styles/common.css',
+          '/assets/styles/site_nav.css',
+          '/assets/styles/color.css',
+          '/assets//styles/jquery.autocomplete.css' ]
       }
     ]);
   });
@@ -127,13 +127,13 @@ describe('builder', function () {
     var minified = builder.minify(__dirname, arr);
     minified.should.eql([
       { target: '/assets/min.js',
-        "type": "js",
+        'type': 'js',
         assets: [ '/assets/hehe.js', '/assets/ganma.js' ],
         min: '/assets/min.7d0550f0.min.js',
         debug: '/assets/min.7d0550f0.debug.js'
       },
       { target: '/assets/min.css',
-        "type": "css",
+        'type': 'css',
         assets: [ '/assets/hehe.css', '/assets/ganma.css', '/assets/home.less' ],
         min: '/assets/min.0d525130.min.css',
         debug: '/assets/min.0d525130.debug.css'
@@ -146,6 +146,36 @@ describe('builder', function () {
 
     fs.readFileSync(minJS, 'utf-8').should.equal('!function(o,l,n,c){console.log("Hello World!")}();\n!function(o,l,n,c){console.log("Hello World!")}();\n');
     fs.readFileSync(minCSS, 'utf-8').should.equal('.foo{float:left}\n.bar{float:left}\n.class{width:2}\n');
+  });
+
+  it('minify should ok with no debug', function () {
+    var arr = [
+      {'target': '/assets/no-debug.js', type: 'js', 'assets': ['/assets/hehe.js', '/assets/ganma.js']},
+      {'target': '/assets/no-debug.css', type: 'css', 'assets': ['/assets/hehe.css', '/assets/ganma.css', '/assets/home.less']}
+    ];
+    var minified = builder.minify(__dirname, arr, true);
+    minified.should.eql([
+      { target: '/assets/no-debug.js',
+        'type': 'js',
+        assets: [ '/assets/hehe.js', '/assets/ganma.js' ],
+        min: '/assets/no-debug.7d0550f0.min.js',
+        //debug: '/assets/min.7d0550f0.debug.js'
+      },
+      { target: '/assets/no-debug.css',
+        'type': 'css',
+        assets: [ '/assets/hehe.css', '/assets/ganma.css', '/assets/home.less' ],
+        min: '/assets/no-debug.0d525130.min.css',
+        // debug: '/assets/min.0d525130.debug.css'
+      }
+    ]);
+
+    var map = builder.map(minified);
+    var minJS = path.join(__dirname, map['/assets/no-debug.js']);
+    var minCSS = path.join(__dirname, map['/assets/no-debug.css']);
+    var debugJS = minJS.replace('.min.', '.debug.');
+    var debugCSS = minCSS.replace('.min.', '.debug.');
+    expect(fs.existsSync(debugJS)).to.be(false);
+    expect(fs.existsSync(debugCSS)).to.be(false);
   });
 
   it('minify should work well with coffee', function () {
@@ -235,44 +265,44 @@ describe('builder', function () {
   });
 
   it('processUrl should ok', function () {
-    var input = `background-image: url('/assets/images/test.jpg');`;
+    var input = 'background-image: url(\'/assets/images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {});
-    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+    output.should.be.equal('background-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg\');');
   });
 
   it('processUrl with hash should ok', function () {
-    var input = `background-image: url('/assets/images/test.jpg#hash');`;
+    var input = 'background-image: url(\'/assets/images/test.jpg#hash\');';
     var output = builder.processUrl(__dirname, input, {});
-    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg#hash');`);
+    output.should.be.equal('background-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg#hash\');');
   });
 
   it('processUrl hit cache should ok', function () {
-    var input = `background-image: url('/assets/images/test.jpg#hash');\nbackground-image: url('/assets/images/test.jpg');`;
+    var input = 'background-image: url(\'/assets/images/test.jpg#hash\');\nbackground-image: url(\'/assets/images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {});
-    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg#hash');\nbackground-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+    output.should.be.equal('background-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg#hash\');\nbackground-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg\');');
   });
 
   it('processUrl with http(x):// should ok', function () {
-    var input = `background-image: url('http://domain.com/assets/images/test.jpg');`;
+    var input = 'background-image: url(\'http://domain.com/assets/images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {});
-    output.should.be.equal(`background-image: url('http://domain.com/assets/images/test.jpg');`);
+    output.should.be.equal('background-image: url(\'http://domain.com/assets/images/test.jpg\');');
   });
 
   it('processUrl with data:uri should ok', function () {
-    var input = `background-image: url('data:,Hello%2C%20World!');`;
+    var input = 'background-image: url(\'data:,Hello%2C%20World!\');';
     var output = builder.processUrl(__dirname, input, {});
-    output.should.be.equal(`background-image: url('data:,Hello%2C%20World!');`);
+    output.should.be.equal('background-image: url(\'data:,Hello%2C%20World!\');');
   });
 
   it('processUrl with (..) should ok', function () {
-    var input = `background-image: url('../images/test.jpg');`;
+    var input = 'background-image: url(\'../images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {}, '/assets/styles/main.css');
-    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+    output.should.be.equal('background-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg\');');
   });
 
   it('processUrl with (.) should ok', function () {
-    var input = `background-image: url('./images/test.jpg');`;
+    var input = 'background-image: url(\'./images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {}, '/assets/main.css');
-    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+    output.should.be.equal('background-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg\');');
   });
 });
