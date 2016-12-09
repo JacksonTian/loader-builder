@@ -27,26 +27,24 @@ builder完成了静态文件相关的如下操作：
 通过Loader来引入css和js的方式称为Loader标签。Builder能根据Loader/css/js/done的关键字来提取标签。
 
 ```html
-{%- Loader('/assets/styles/common.min.css')
-  .css('/assets/styles/reset.css')
-  .css('/assets/styles/common.css')
-  .css('/assets/styles/site_nav.css')
-  .css('/assets/styles/color.css')
-  .css('/assets/styles/jquery.autocomplete.css')
-  .done()
-%}
+<%- Loader('/assets/bootstrap-3.3.7/css/bootstrap.css', '/assets/scripts/bootstrap.js')
+    .css('/assets/bootstrap-3.3.7/css/bootstrap.min.css')
+    .js('/assets/scripts/lib/jquery-3.1.1.min.js')
+    .js('/assets/bootstrap-3.3.7/js/bootstrap.min.js')
+    .done(assets, CDN) %>
 
-{%- Loader.file('/assets/images/file.png').done()%}
+<img src="<%=Loader.file('/assets/images/logo.png').done(assets, CDN)%>" class="nav-logo">
 ```
 
 ## 构建
+
 为了配合Loader的使用，builder需要通过构建的方式来生成静态文件的映射。其格式如下：
 
 ```json
 {
-  "/assets/index.min.js":"/assets/index.min.ecf8427e.js",
-  "/assets/index.min.css":"/assets/index.min.f2fdeab1.css",
-  "/assets/images/file.png":"/assets/images/file.e2cdab41.png"
+  "/assets/images/logo.png": "/assets/images/logo.b806e460.hashed.png",
+  "/assets/scripts/bootstrap.js": "/assets/scripts/bootstrap.121539c7.min.js",
+  "/assets/bootstrap-3.3.7/css/bootstrap.css": "/assets/bootstrap-3.3.7/css/bootstrap.b8e0f876.min.css"
 }
 ```
 
@@ -56,13 +54,20 @@ builder完成了静态文件相关的如下操作：
 $ builder <views_dir> <output_dir>
 $ # 或者
 $ npm install loader-builder --save
-$ ./node_modules/loader-builder/bin/builder <views_dir> <output_dir>
+$ ./node_modules/.bin/builder <views_dir> <output_dir>
 ```
 
-以上脚本将会遍历视图目录中寻找`Loader().js().css().done()`这样的标记，然后得到合并文件与实际文件的关系。如以上的`assets/index.min.js`文件并不一定需要真正存在，进行扫描构建后，会将相关的`js`文件进行编译和合并为一个文件。
-并且根据文件内容进行md5取hash值，最终生成`/assets/index.min.ecf8427e.js`这样的文件。
+以上脚本将会遍历视图目录中寻找`Loader().js().css().done()`这样的标记，然后得到合并文件与实际文件的关系。如以上的`/assets/scripts/bootstrap.js`文件并不一定需要真正存在，进行扫描构建后，会将相关的`js`文件进行编译和合并为一个文件。并且根据文件内容进行md5取hash值，最终生成`/assets/scripts/bootstrap.121539c7.min.js`这样的文件。以及一个没有进行压缩的用于debug的文件`/assets/scripts/bootstrap.121539c7.debug.js`。
 
-遍历完目录后，将这些映射关系生成为`assets.json`文件，这个文件位于`<output_dir>`指定的目录下。使用时请正确引入该文件，并借助服务端将其传递给`.done()`函数。
+通过添加`--no-debug`开关可以关闭debug文件的输出。如下所示：
+
+```sh
+$ builder <views_dir> <output_dir> --no-debug
+```
+
+遍历完目录后，将这些映射关系生成为`assets.json`文件，这个文件位于`<output_dir>`指定的目录下。使用时请正确引入该文件，并借助服务端将其传递给`.done()`函数，作为assets参数。
+
+现在的CDN通常都具备自动回源功能，当配合CDN时，可以传入CDN前缀地址，作为.done()的第二个参数。
 
 ## License
 The MIT license
