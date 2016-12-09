@@ -57,17 +57,47 @@ $ npm install loader-builder --save
 $ ./node_modules/.bin/builder <views_dir> <output_dir>
 ```
 
-以上脚本将会遍历视图目录中寻找`Loader().js().css().done()`这样的标记，然后得到合并文件与实际文件的关系。如以上的`/assets/scripts/bootstrap.js`文件并不一定需要真正存在，进行扫描构建后，会将相关的`js`文件进行编译和合并为一个文件。并且根据文件内容进行md5取hash值，最终生成`/assets/scripts/bootstrap.121539c7.min.js`这样的文件。以及一个没有进行压缩的用于debug的文件`/assets/scripts/bootstrap.121539c7.debug.js`。
+以上脚本将会遍历视图目录中寻找`Loader().js().css().done()`这样的标记，然后得到合并文件与实际文件的关系。如以上的`/assets/scripts/bootstrap.js`文件并不一定需要真正存在，进行扫描构建后，会将相关的`js`文件进行编译和合并为一个文件。并且根据文件内容进行md5取hash值，最终生成`/assets/scripts/bootstrap.121539c7.min.js`这样的文件。
+
+遍历完目录后，将这些映射关系生成为`assets.json`文件，这个文件位于`<output_dir>`指定的目录下。使用时请正确引入该文件，并借助服务端将其传递给`.done()`函数，作为assets参数。比如：
+
+```js
+var assets = require('./assets.json');
+// app.js 让assets变量在视图中可见
+this.state.assets = assets;
+// view.html 直接使用
+<%=Loader.file('/assets/images/logo.png').done(assets)%>
+// dev
+// => /assets/images/logo.png
+// production
+// => /assets/images/logo.b806e460.hashed.png
+```
+
+## Support CDN
+
+现在的CDN通常都具备自动回源功能，当配合CDN时，可以传入CDN前缀地址，作为`.done(assets, CDN)`的第二个参数。比如：
+
+```js
+// app.js 让CDN变量在视图中可见
+this.state.CDN = 'http://cdn_domain';
+// view.html 直接使用
+<%=Loader.file('/assets/images/logo.png').done(assets, CDN)%>
+// => http://cdn_domain/assets/images/logo.b806e460.hashed.png
+```
+
+如果不使用CDN，传入空字符串即可，表示从当前服务器拉取文件。
+
+## Support Debug
+
+loader-builder默认会帮助生成一个与编译合并后的文件相关的文件用于支持线上调试。比如`/assets/scripts/bootstrap.121539c7.min.js`对应的调试文件就是`/assets/scripts/bootstrap.121539c7.debug.js`。将`.min.`修改为`.debug.`即可。
+
+通过debug文件，可以借助fiddler/anyproxy之类的HTTP请求转发工具进行对线上的代码调试。
 
 通过添加`--no-debug`开关可以关闭debug文件的输出。如下所示：
 
 ```sh
 $ builder <views_dir> <output_dir> --no-debug
 ```
-
-遍历完目录后，将这些映射关系生成为`assets.json`文件，这个文件位于`<output_dir>`指定的目录下。使用时请正确引入该文件，并借助服务端将其传递给`.done()`函数，作为assets参数。
-
-现在的CDN通常都具备自动回源功能，当配合CDN时，可以传入CDN前缀地址，作为.done()的第二个参数。
 
 ## License
 The MIT license
