@@ -6,6 +6,9 @@ MOCHA = ./node_modules/mocha/bin/mocha
 MOCHA_ = ./node_modules/mocha/bin/_mocha
 COVERALLS = ./node_modules/coveralls/bin/coveralls.js
 
+lint:
+	@eslint --fix lib bin/builder test/*.js
+
 test:
 	@NODE_ENV=test $(MOCHA) -R $(REPORTER) -t $(TIMEOUT) \
 		$(MOCHA_OPTS) \
