@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "coveralls": "*",
+    "eslint": "^3.11.1",
     "expect.js": "^0.3.1",
     "istanbul": "*",
     "mocha": "*",

@@ -277,9 +277,9 @@ describe('builder', function () {
   });
 
   it('processUrl hit cache should ok', function () {
-    var input = `background-image: url('/assets/images/test.jpg#hash');\nbackground-image: url('/assets/images/test.jpg');`;
+    var input = 'background-image: url(\'/assets/images/test.jpg#hash\');\nbackground-image: url(\'/assets/images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {});
-    output.should.be.equal(`background-image: url('/assets/images/test.43e9fc4d.hashed.jpg#hash');\nbackground-image: url('/assets/images/test.43e9fc4d.hashed.jpg');`);
+    output.should.be.equal('background-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg#hash\');\nbackground-image: url(\'/assets/images/test.43e9fc4d.hashed.jpg\');');
   });
 
   it('processUrl with http(x):// should ok', function () {
