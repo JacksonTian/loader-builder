@@ -13,10 +13,10 @@ test:
 		$(TESTS)
 
 test-cov:
-	@istanbul cover --report html $(MOCHA_) -- -t $(TIMEOUT) -R spec $(TESTS)
+	@istanbul cover --report html $(_MOCHA) -- -t $(TIMEOUT) -R spec $(TESTS)
 
 test-coveralls:
-	@istanbul cover --report lcovonly $(MOCHA_) -- -t $(TIMEOUT) -R spec $(TESTS)
+	@istanbul cover --report lcovonly $(_MOCHA) -- -t $(TIMEOUT) -R spec $(TESTS)
 	@echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
 	@cat ./coverage/lcov.info | coveralls && rm -rf ./coverage
 
