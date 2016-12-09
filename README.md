@@ -19,9 +19,11 @@ builder完成了静态文件相关的如下操作：
   - [x] 支持coffee
   - [x] 支持babel
 - [x] 压缩JavaScript和CSS文件，减少文件体积
+  - [x] 保留debug文件，用于在线调试
 - [x] 合并多个文件，减少请求数量
 - [x] 计算文件签名，利于增量式发布
   - [x] 支持任意文件的引入
+  - [x] 签名.css中的文件
 
 ## Loader标签
 通过Loader来引入css和js的方式称为Loader标签。Builder能根据Loader/css/js/done的关键字来提取标签。
