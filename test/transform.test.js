@@ -40,6 +40,6 @@ describe('transform', function () {
   });
 
   it('babel should work well', function () {
-    transform.transformEcmaScript('var [a, b] = [1, 2];').should.equal('"use strict";\n\nvar a = 1;\nvar b = 2;');
+    transform.transformEcmaScript('var [a, b] = [1, 2];').should.equal('"use strict";\n\nvar a = 1,\n    b = 2;');
   });
 });
