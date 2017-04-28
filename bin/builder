@@ -24,7 +24,16 @@ var viewsDir = path.join(process.cwd(), argv[2]);
 // app/
 var baseDir = path.join(process.cwd(), argv[3]);
 // no debug
-var noDebug = argv[4] === '--no-debug';
+var noDebug = false;
+
+var prefix = '';
+
+argv.forEach(item => {
+  if(item === '--no-debug') {noDebug = true;}
+  if(~item.indexOf('--prefix')){
+    prefix = item.split('=')[1];
+  }
+});
 
 var start = new Date();
 // scan views folder, get the assets map
@@ -36,7 +45,8 @@ console.log(colors.magenta('Scaned.'), colors.cyan(scaned.length),
   colors.magenta('asset(s) will be build.'));
 
 // combo？md5 hash
-var minified = builder.minify(baseDir, scaned, noDebug);
+var fileRealDir = path.join(baseDir,prefix);
+var minified = builder.minify(fileRealDir, scaned, noDebug);
 // console.log(minified);
 console.log(colors.magenta(' 🏁  Compile static assets done.'),
   colors.gray('Build time'), colors.cyan(new Date() - start),
