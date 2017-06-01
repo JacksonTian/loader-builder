@@ -186,15 +186,15 @@ describe('builder', function () {
     minified.should.eql([
       { target: '/assets/coffee.js',
         assets: [ '/assets/js.coffee'],
-        min: '/assets/coffee.b8b735e8.min.js',
-        debug: '/assets/coffee.b8b735e8.debug.js'
+        min: '/assets/coffee.c8f72dd9.min.js',
+        debug: '/assets/coffee.c8f72dd9.debug.js'
       }
     ]);
 
     var map = builder.map(minified);
     var minJS = path.join(__dirname, map['/assets/coffee.js']);
 
-    fs.readFileSync(minJS, 'utf-8').should.equal('(function(){var n;n=function(n){return n*n}}).call(this);\n');
+    fs.readFileSync(minJS, 'utf-8').should.equal('(function(){}).call(this);\n');
   });
 
   it('minify should work well with coffee', function () {
@@ -205,15 +205,15 @@ describe('builder', function () {
     minified.should.eql([
       { target: '/assets/coffee.js',
         assets: [ '/assets/js.coffee'],
-        min: '/assets/coffee.b8b735e8.min.js',
-        debug: '/assets/coffee.b8b735e8.debug.js'
+        min: '/assets/coffee.c8f72dd9.min.js',
+        debug: '/assets/coffee.c8f72dd9.debug.js'
       }
     ]);
 
     var map = builder.map(minified);
     var minJS = path.join(__dirname, map['/assets/coffee.js']);
 
-    fs.readFileSync(minJS, 'utf-8').should.equal('(function(){var n;n=function(n){return n*n}}).call(this);\n');
+    fs.readFileSync(minJS, 'utf-8').should.equal('(function(){}).call(this);\n');
   });
 
   it('minify should work well with stylus', function () {
@@ -261,7 +261,7 @@ describe('builder', function () {
     ];
     (function () {
       builder.minify(__dirname, arr);
-    }).should.throw('Compress /assets/invalid.js has error:\nSyntaxError: Unexpected token: operator (<)');
+    }).should.throw('Compress /assets/invalid.js has error:\nUnexpected token: operator (<)');
   });
 
   it('processUrl should ok', function () {
