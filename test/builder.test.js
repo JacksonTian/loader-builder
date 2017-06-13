@@ -264,6 +264,46 @@ describe('builder', function () {
     }).should.throw('Compress /assets/invalid.js has error:\nUnexpected token: operator (<)');
   });
 
+  it('minify should work well with .vue', function () {
+    var arr = [
+      {'target': '/assets/vue.js', 'assets': ['/assets/test.vue']}
+    ];
+    var minified = builder.minify(__dirname, arr);
+    minified.should.eql([
+      { target: '/assets/vue.js',
+        assets: [ '/assets/test.vue'],
+        min: '/assets/vue.ac53a6d9.min.js',
+        debug: '/assets/vue.ac53a6d9.debug.js'
+      }
+    ]);
+
+    var map = builder.map(minified);
+    var minJS = path.join(__dirname, map['/assets/vue.js']);
+    var debugJS = minJS.replace('.min.js', '.debug.js');
+    fs.readFileSync(debugJS, 'utf-8').should.equal(`(function () {
+  var css = "\\n.example {\\n  color: red;\\n}\\n";
+  var elem = document.createElement('style');
+  elem.setAttribute('type', 'text/css');
+
+  if ('textContent' in elem) {
+    elem.textContent = css;
+  } else {
+    elem.styleSheet.cssText = css;
+  }
+
+  document.getElementsByTagName('head')[0].appendChild(elem);
+})();
+
+var template = "\\n  <div class=\\"example\\">{{ msg }}</div>\\n";
+
+(function () {
+
+console.log(template);
+
+})();
+`);
+  });
+
   it('processUrl should ok', function () {
     var input = 'background-image: url(\'/assets/images/test.jpg\');';
     var output = builder.processUrl(__dirname, input, {});
