@@ -1,3 +1,4 @@
 (function (a, b, c, d) {
-  console.log('Hello World!');
+  const a = 'a';
+  console.log(a);
 }());

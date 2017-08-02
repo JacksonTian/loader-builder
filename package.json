@@ -26,7 +26,7 @@
     "kitx": "^1.0.0",
     "less": "^2.7.1",
     "stylus": "^0.54.5",
-    "uglify-js": "^2.7.3"
+    "uglify-es": "^3.0.27"
   },
   "devDependencies": {
     "coveralls": "*",

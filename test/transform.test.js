@@ -5,7 +5,8 @@ var should = require('should');
 
 describe('transform', function () {
   it('uglify/CSS should work well', function () {
-    transform.transformScript('(function (a, b, c, d) {console.log(\'hello world!\');}());').should.equal('!function(o,l,n,c){console.log("hello world!")}();');
+    transform.transformScript('(function (a, b, c, d) {console.log(\'hello world!\');}());').should.equal('console.log("hello world!");');
+    transform.transformScript('var a = "a";var b = {[a]: "value"};').should.equal('var a="a",b={[a]:"value"};');
     transform.transformStyle('.foo {  float: left;}').should.equal('.foo{float:left}');
   });
 
