@@ -129,8 +129,8 @@ describe('builder', function () {
       { target: '/assets/min.js',
         'type': 'js',
         assets: [ '/assets/hehe.js', '/assets/ganma.js' ],
-        min: '/assets/min.d01c49af.min.js',
-        debug: '/assets/min.d01c49af.debug.js'
+        min: '/assets/min.c259e248.min.js',
+        debug: '/assets/min.c259e248.debug.js'
       },
       { target: '/assets/min.css',
         'type': 'css',
@@ -144,7 +144,7 @@ describe('builder', function () {
     var minJS = path.join(__dirname, map['/assets/min.js']);
     var minCSS = path.join(__dirname, map['/assets/min.css']);
 
-    fs.readFileSync(minJS, 'utf-8').should.equal('!function(o,n,c,l){const o="a";console.log(o)}();\n!function(o,n,c,l){const o="a";console.log(o)}();\n');
+    fs.readFileSync(minJS, 'utf-8').should.equal('console.log("a");\nconsole.log("a");\n');
     fs.readFileSync(minCSS, 'utf-8').should.equal('.foo{float:left}\n.bar{float:left}\n.class{width:2}\n');
   });
 
@@ -158,7 +158,7 @@ describe('builder', function () {
       { target: '/assets/no-debug.js',
         'type': 'js',
         assets: [ '/assets/hehe.js', '/assets/ganma.js' ],
-        min: '/assets/no-debug.d01c49af.min.js',
+        min: '/assets/no-debug.c259e248.min.js',
         //debug: '/assets/min.7d0550f0.debug.js'
       },
       { target: '/assets/no-debug.css',

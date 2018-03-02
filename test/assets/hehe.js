@@ -1,4 +1,4 @@
-(function (a, b, c, d) {
+(function () {
   const a = 'a';
   console.log(a);
 }());
