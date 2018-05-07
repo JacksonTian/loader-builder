@@ -46,6 +46,6 @@ console.log(colors.magenta(' 🏁  Compile static assets done.'),
 var assets = path.join(baseDir, 'assets.json');
 console.log(colors.magenta('assets.json is here: '), colors.cyan(assets));
 var map = builder.map(minified);
-fs.writeFile(assets, JSON.stringify(map));
+fs.writeFileSync(assets, JSON.stringify(map));
 console.log(colors.magenta('write assets.json done. assets.json: '));
 console.log(colors.gray(JSON.stringify(map, null, '  ')));
