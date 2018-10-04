@@ -1,9 +1,6 @@
 loader-builder
 ==============
-
-- [![Dependencies Status](https://david-dm.org/JacksonTian/loader-builder.png)](https://david-dm.org/JacksonTian/loader-builder)
-- [![Build Status](https://secure.travis-ci.org/JacksonTian/loader-builder.png?branch=master)](http://travis-ci.org/JacksonTian/loader-builder)
-- [![Coverage Status](https://coveralls.io/repos/JacksonTian/loader-builder/badge.png)](https://coveralls.io/r/JacksonTian/loader-builder)
+[![Hackage-Deps](https://img.shields.io/hackage-deps/v/lens.svg)](https://david-dm.org/JacksonTian/loader-builder) [![Build Status](https://travis-ci.org/JacksonTian/loader-builder.svg?branch=master)](https://travis-ci.org/JacksonTian/loader-builder) [![Coveralls github](https://img.shields.io/coveralls/github/JacksonTian/loader-builder.svg)](https://coveralls.io/r/JacksonTian/loader-builder)
 
 ## Introduction
 
