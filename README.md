@@ -84,7 +84,31 @@ this.state.CDN = 'http://cdn_domain';
 // => http://cdn_domain/assets/images/logo.b806e460.hashed.png
 ```
 
-如果不使用CDN，传入空字符串即可，表示从当前服务器拉取文件。
+## Support prefix
+
+解决静态文件路径和实际文件路径不匹配的问题
+通过添加`--prefix=/a/b/c`指定路径前缀
+举个例子,在eggjs的开发中，可能有如下代码
+
+```html
+<head>
+    <title>Hacker News</title>
+    {{ helper.Loader("/public/dist/index.css")
+    .css("/public/index.css")
+    .css("/public/index2.css")
+    .done(ctx.app.config.loader.assetsMap, ctx.app.config.loader.cdnHost,true) | safe
+    }}
+</head>
+```
+
+但实际上public文件夹不在项目根目录，而是在/app/public
+这个时候使用 --prefix
+
+```sh
+$ builder <views_dir> <output_dir> --prefix=/app
+```
+
+就能解决问题
 
 ## Support Debug
 
