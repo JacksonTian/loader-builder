@@ -29,3 +29,5 @@ node_modules
 *.min.*
 *.debug.*
 *.*.jpg
+
+.nyc_output/

@@ -27,7 +27,7 @@ describe('transform', function () {
   it('stylus should work with exception', function () {
     (function () {
       transform.transformStylus('.class{width: (1 +)}');
-    }).should.throw('stylus:1:18\n   1| .class{width: (1 +)}\n-----------------------^\n\nCannot read property \'lineno\' of undefined\n    at ".class" (stylus:2:22)\n');
+    }).should.throw('stylus:1:18\n   1| .class{width: (1 +)}\n-----------------------^\n\nCannot read property \'lineno\' of undefined\n    at ".class" (stylus:2:1)\n');
   });
 
   it('coffee should work well', function () {
@@ -37,7 +37,7 @@ describe('transform', function () {
   it('coffee should work with exception', function () {
     (function () {
       transform.transformCoffee('<foo> = bar');
-    }).should.throw('unexpected <');
+    }).should.throw('missing </');
   });
 
   it('babel should work well', function () {
